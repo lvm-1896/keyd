@@ -322,8 +322,8 @@ int device_grab(struct device *dev)
 	 * await neutral key state to ensure any residual
 	 * key up events propagate.
 	 */
-
-	while (1) {
+    int loop = 1000;
+	while (loop-- >= 0) {
 		int n = 0;
 		memset(state, 0, sizeof(state));
 
@@ -337,9 +337,7 @@ int device_grab(struct device *dev)
 				n++;
 		}
 
-		if (n == 0)
-			break;
-		else
+		if (n > 0)
 			pending_release = 1;
 	}
 
